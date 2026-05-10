@@ -17,18 +17,17 @@
 
   * { margin: 0; padding: 0; box-sizing: border-box; }
 
+  html, body {
+    height: 100%;
+  }
+
   body {
     background: var(--bg);
     color: var(--green);
     font-family: 'Share Tech Mono', monospace;
-    min-height: 100vh;
+    min-height: 100dvh;
     display: flex;
     flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    gap: 0;
-    overflow: hidden;
-    position: relative;
   }
 
   a, a:link, a:visited, a:hover, a:active {
@@ -36,54 +35,13 @@
     text-decoration: none;
   }
 
-
-  /* ── HEADER ── */
-  header {
-    width: 100%;
-    max-width: 900px;
-    display: flex;
-    justify-content: space-between;
-    align-items: baseline;
-    padding: 14px 0 10px;
-    border-bottom: 1px solid var(--green-faint);
-  }
-
-  .site-title {
-    font-size: 13px;
-    letter-spacing: 4px;
-    color: var(--green);
-    opacity: 0.9;
-  }
-
-  .status-dot {
-    display: inline-block;
-    width: 6px;
-    height: 6px;
-    border-radius: 50%;
-    background: var(--green);
-    margin-right: 8px;
-    animation: blink 1.6s step-end infinite;
-  }
-
-  @keyframes blink {
-    0%, 100% { opacity: 1; }
-    50% { opacity: 0; }
-  }
-
-  .header-right {
-    font-size: 11px;
-    opacity: 0.4;
-    letter-spacing: 2px;
-  }
-
-  /* ── MAIN VIDEO WRAPPER ── */
+  /* ── VIDEO ── */
   .main-stage {
     position: relative;
-    width: 900px;
+    width: 100%;
     aspect-ratio: 16 / 9;
     background: #000;
-    border-left: 1px solid var(--green-faint);
-    border-right: 1px solid var(--green-faint);
+    flex-shrink: 0;
   }
 
   #fg-player {
@@ -92,9 +50,9 @@
     width: 100%;
     height: 100%;
     border: none;
+    display: block;
   }
 
-  /* Intense green filter */
   .green-overlay {
     position: absolute;
     inset: 0;
@@ -102,18 +60,6 @@
     mix-blend-mode: multiply;
     pointer-events: none;
     z-index: 10;
-  }
-
-  /* Subtle green vignette on the video */
-  .video-vignette {
-    position: absolute;
-    inset: 0;
-    background: radial-gradient(ellipse at center,
-      transparent 50%,
-      rgba(0, 30, 0, 0.5) 100%
-    );
-    pointer-events: none;
-    z-index: 11;
   }
 
   /* Start screen */
@@ -129,11 +75,6 @@
     z-index: 50;
     cursor: pointer;
     transition: opacity 0.4s;
-  }
-
-  .start-screen:hover .start-btn {
-    background: var(--green-glow);
-    box-shadow: 0 0 20px rgba(0, 255, 65, 0.3);
   }
 
   .start-screen.hidden {
@@ -154,54 +95,69 @@
     font-family: 'Share Tech Mono', monospace;
     font-size: 13px;
     letter-spacing: 3px;
-    padding: 12px 32px;
+    padding: 14px 36px;
     background: transparent;
     cursor: pointer;
-    transition: background 0.15s, box-shadow 0.15s;
     text-transform: uppercase;
+    -webkit-tap-highlight-color: transparent;
   }
 
-  /* ── BOTTOM BAR ── */
-  .bottom-bar {
-    width: 900px;
-    display: grid;
-    grid-template-columns: 1fr auto 1fr;
-    align-items: center;
-    padding: 10px 0;
+  /* ── CONTROLS PANEL ── */
+  .panel {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
     border-top: 1px solid var(--green-faint);
-    gap: 16px;
+    padding: 0 16px;
+  }
+
+  /* Track info row */
+  .track-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    padding: 14px 0 10px;
+    border-bottom: 1px solid var(--green-faint);
+    gap: 12px;
   }
 
   .track-block {
     display: flex;
     flex-direction: column;
-    gap: 3px;
+    gap: 4px;
+    min-width: 0;
   }
 
-  .track-block.right { text-align: right; align-items: flex-end; }
+  .track-block.right {
+    text-align: right;
+    align-items: flex-end;
+  }
 
   .track-label {
     font-size: 9px;
     letter-spacing: 3px;
     opacity: 0.35;
     text-transform: uppercase;
+    white-space: nowrap;
   }
 
   .track-name {
-    font-size: 11px;
+    font-size: 12px;
     letter-spacing: 1px;
-    opacity: 0.75;
+    opacity: 0.8;
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
-    max-width: 260px;
   }
 
-  /* ── CONTROLS ── */
-  .controls {
+  /* Buttons row */
+  .btn-row {
     display: flex;
-    gap: 10px;
     align-items: center;
+    justify-content: space-between;
+    padding: 12px 0;
+    gap: 12px;
   }
 
   .ctrl-btn {
@@ -209,29 +165,84 @@
     border: 1px solid var(--green-faint);
     color: var(--green-dim);
     font-family: 'Share Tech Mono', monospace;
-    font-size: 10px;
+    font-size: 11px;
     letter-spacing: 2px;
-    padding: 5px 10px;
+    padding: 10px 18px;
     cursor: pointer;
-    transition: border-color 0.1s, color 0.1s, box-shadow 0.1s;
     text-transform: uppercase;
+    min-height: 44px;
+    transition: border-color 0.1s, color 0.1s;
+    -webkit-tap-highlight-color: transparent;
+    white-space: nowrap;
   }
 
-  .ctrl-btn:hover {
+  .ctrl-btn:active {
     border-color: var(--green);
     color: var(--green);
-    box-shadow: 0 0 8px rgba(0, 255, 65, 0.2);
   }
 
-  /* ── BOC AUDIO PLAYER (hidden visually, kept in DOM so browser plays it) ── */
+  /* Slider */
+  .overlay-control {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+    font-size: 9px;
+    letter-spacing: 2px;
+    opacity: 0.45;
+    text-transform: uppercase;
+    flex: 1;
+  }
+
+  input[type=range] {
+    -webkit-appearance: none;
+    width: 100%;
+    height: 2px;
+    background: var(--green-faint);
+    outline: none;
+    cursor: pointer;
+  }
+
+  input[type=range]::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    width: 16px;
+    height: 16px;
+    background: var(--green);
+    border-radius: 0;
+    cursor: pointer;
+  }
+
+  input[type=range]::-moz-range-thumb {
+    width: 16px;
+    height: 16px;
+    background: var(--green);
+    border: none;
+    border-radius: 0;
+    cursor: pointer;
+  }
+
+  /* ── FOOTER ── */
+  footer.footer-note {
+    flex-shrink: 0;
+    font-size: 9px;
+    letter-spacing: 2px;
+    opacity: 0.25;
+    text-align: center;
+    padding: 10px 16px;
+    /* Keeps footer above the home indicator on notched iPhones */
+    padding-bottom: calc(10px + env(safe-area-inset-bottom));
+    border-top: 1px solid var(--green-faint);
+  }
+
+  /* ── BOC PLAYER (must be in DOM + have layout to play) ── */
   .boc-wrapper {
     position: fixed;
-    bottom: -120px;
+    bottom: -200px;
     left: 0;
-    width: 1px;
-    height: 1px;
-    overflow: hidden;
-    opacity: 0.01;
+    width: 2px;
+    height: 2px;
+    overflow: visible;
+    opacity: 0.001;
     pointer-events: none;
   }
 
@@ -240,56 +251,11 @@
     height: 80px;
     border: none;
   }
-
-  /* ── OVERLAY INTENSITY SLIDER ── */
-  .overlay-control {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    font-size: 9px;
-    letter-spacing: 2px;
-    opacity: 0.4;
-    text-transform: uppercase;
-  }
-
-  input[type=range] {
-    -webkit-appearance: none;
-    width: 60px;
-    height: 1px;
-    background: var(--green-dim);
-    outline: none;
-    cursor: pointer;
-  }
-
-  input[type=range]::-webkit-slider-thumb {
-    -webkit-appearance: none;
-    width: 8px;
-    height: 8px;
-    background: var(--green);
-    border-radius: 0;
-    cursor: pointer;
-  }
-
-  .footer-note {
-    font-size: 9px;
-    letter-spacing: 2px;
-    opacity: 0.2;
-    padding: 0 0 10px;
-    text-align: center;
-  }
 </style>
 </head>
 <body>
 
-<!-- Header -->
-<header>
-  <div class="site-title"><span class="status-dot"></span>green family guy</div>
-</header>
-
-<!-- Main video stage -->
 <div class="main-stage">
-
-  <!-- YouTube: Family Guy (muted) -->
   <iframe
     id="fg-player"
     src=""
@@ -298,53 +264,45 @@
     title="Family Guy"
   ></iframe>
 
-  <!-- Green overlay -->
   <div class="green-overlay" id="greenOverlay"></div>
-  <div class="video-vignette"></div>
 
-  <!-- Start screen (shown until user clicks play) -->
   <div class="start-screen" id="startScreen" onclick="startAll()">
-    <div class="start-label">click to begin</div>
+    <div class="start-label">tap to play</div>
     <button class="start-btn">▶ play</button>
   </div>
-
 </div>
 
-<!-- Bottom bar -->
-<div class="bottom-bar">
-
-  <!-- Left: current FG clip -->
-  <div class="track-block">
-    <div class="track-label">clip</div>
-    <div class="track-name" id="fgLabel">—</div>
+<div class="panel">
+  <div class="track-row">
+    <div class="track-block">
+      <div class="track-label">clip</div>
+      <div class="track-name" id="fgLabel">—</div>
+    </div>
+    <div class="track-block right">
+      <div class="track-label">now playing</div>
+      <div class="track-name" id="bocLabel">—</div>
+    </div>
   </div>
 
-  <!-- Center: controls -->
-  <div class="controls">
+  <div class="btn-row">
     <button class="ctrl-btn" onclick="prevFG()">◂ clip</button>
     <div class="overlay-control">
-      green <input type="range" min="0" max="100" value="72" oninput="setOverlay(this.value)">
+      green
+      <input type="range" min="0" max="100" value="72" oninput="setOverlay(this.value)">
     </div>
     <button class="ctrl-btn" onclick="nextBOC()">track ▸</button>
   </div>
-
-  <!-- Right: current BoC track -->
-  <div class="track-block right">
-    <div class="track-label">boards of canada</div>
-    <div class="track-name" id="bocLabel">—</div>
-  </div>
-
 </div>
 
-<div class="footer-note">credit to: <a href="https://www.instagram.com/dktamt">(IG) @dktamt</a> for the idea.<br/>tested with firefox 150. may not work with other browsers.</div>
+<footer class="footer-note">
+  credit to: <a href="https://www.instagram.com/dktamt">(IG) @dktamt</a> for the idea.
+</footer>
 
-<!-- BoC audio player (tiny, off-screen — browsers won't play fully hidden iframes) -->
 <div class="boc-wrapper">
   <iframe id="boc-player" src="" allow="autoplay; encrypted-media" title="Boards of Canada"></iframe>
 </div>
 
 <script>
-  // ── Playlists ────────────────────────────────────────────────────────────
   const FG_CLIPS = [
     { id: 'JQDFgbWIEeA', title: 'funny moments vol. 1' },
     { id: 'IohiBXQ_sGc', title: 'funny moments vol. 2' },
@@ -365,7 +323,6 @@
   let fgIndex = 0;
   let bocIndex = 0;
 
-  // No enablejsapi=1 → YouTube never attempts postMessage back to this page
   function fgSrc(id) {
     return `https://www.youtube.com/embed/${id}?autoplay=1&mute=1&controls=1&rel=0&modestbranding=1&iv_load_policy=3`;
   }
@@ -374,7 +331,6 @@
     return `https://www.youtube.com/embed/${id}?autoplay=1&mute=0&controls=0&rel=0&modestbranding=1`;
   }
 
-  // ── Start (user gesture satisfies autoplay policy for both iframes) ───────
   function startAll() {
     document.getElementById('startScreen').classList.add('hidden');
     document.getElementById('fg-player').src  = fgSrc(FG_CLIPS[fgIndex].id);
@@ -382,7 +338,6 @@
     updateLabels();
   }
 
-  // ── Navigation ────────────────────────────────────────────────────────────
   function prevFG() {
     fgIndex = (fgIndex - 1 + FG_CLIPS.length) % FG_CLIPS.length;
     document.getElementById('fg-player').src = fgSrc(FG_CLIPS[fgIndex].id);
@@ -400,7 +355,6 @@
     document.getElementById('bocLabel').textContent = BOC_TRACKS[bocIndex].title;
   }
 
-  // ── Overlay intensity control ─────────────────────────────────────────────
   function setOverlay(val) {
     document.getElementById('greenOverlay').style.background =
       `rgba(0, 255, 40, ${val / 100})`;
