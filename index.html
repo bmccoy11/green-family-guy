@@ -1,0 +1,412 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>green family guy</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap');
+
+  :root {
+    --green: #00ff41;
+    --green-dim: #00b32c;
+    --green-faint: #003311;
+    --green-glow: rgba(0, 255, 65, 0.15);
+    --bg: #030a04;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: var(--bg);
+    color: var(--green);
+    font-family: 'Share Tech Mono', monospace;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 0;
+    overflow: hidden;
+    position: relative;
+  }
+
+  a, a:link, a:visited, a:hover, a:active {
+    color: inherit;
+    text-decoration: none;
+  }
+
+
+  /* ── HEADER ── */
+  header {
+    width: 100%;
+    max-width: 900px;
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    padding: 14px 0 10px;
+    border-bottom: 1px solid var(--green-faint);
+  }
+
+  .site-title {
+    font-size: 13px;
+    letter-spacing: 4px;
+    color: var(--green);
+    opacity: 0.9;
+  }
+
+  .status-dot {
+    display: inline-block;
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--green);
+    margin-right: 8px;
+    animation: blink 1.6s step-end infinite;
+  }
+
+  @keyframes blink {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0; }
+  }
+
+  .header-right {
+    font-size: 11px;
+    opacity: 0.4;
+    letter-spacing: 2px;
+  }
+
+  /* ── MAIN VIDEO WRAPPER ── */
+  .main-stage {
+    position: relative;
+    width: 900px;
+    aspect-ratio: 16 / 9;
+    background: #000;
+    border-left: 1px solid var(--green-faint);
+    border-right: 1px solid var(--green-faint);
+  }
+
+  #fg-player {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    border: none;
+  }
+
+  /* Intense green filter */
+  .green-overlay {
+    position: absolute;
+    inset: 0;
+    background: rgba(0, 255, 40, 0.72);
+    mix-blend-mode: multiply;
+    pointer-events: none;
+    z-index: 10;
+  }
+
+  /* Subtle green vignette on the video */
+  .video-vignette {
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(ellipse at center,
+      transparent 50%,
+      rgba(0, 30, 0, 0.5) 100%
+    );
+    pointer-events: none;
+    z-index: 11;
+  }
+
+  /* Start screen */
+  .start-screen {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 20px;
+    background: var(--bg);
+    z-index: 50;
+    cursor: pointer;
+    transition: opacity 0.4s;
+  }
+
+  .start-screen:hover .start-btn {
+    background: var(--green-glow);
+    box-shadow: 0 0 20px rgba(0, 255, 65, 0.3);
+  }
+
+  .start-screen.hidden {
+    opacity: 0;
+    pointer-events: none;
+  }
+
+  .start-label {
+    font-size: 11px;
+    letter-spacing: 4px;
+    opacity: 0.4;
+    text-transform: uppercase;
+  }
+
+  .start-btn {
+    border: 1px solid var(--green);
+    color: var(--green);
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 13px;
+    letter-spacing: 3px;
+    padding: 12px 32px;
+    background: transparent;
+    cursor: pointer;
+    transition: background 0.15s, box-shadow 0.15s;
+    text-transform: uppercase;
+  }
+
+  /* ── BOTTOM BAR ── */
+  .bottom-bar {
+    width: 900px;
+    display: grid;
+    grid-template-columns: 1fr auto 1fr;
+    align-items: center;
+    padding: 10px 0;
+    border-top: 1px solid var(--green-faint);
+    gap: 16px;
+  }
+
+  .track-block {
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+  }
+
+  .track-block.right { text-align: right; align-items: flex-end; }
+
+  .track-label {
+    font-size: 9px;
+    letter-spacing: 3px;
+    opacity: 0.35;
+    text-transform: uppercase;
+  }
+
+  .track-name {
+    font-size: 11px;
+    letter-spacing: 1px;
+    opacity: 0.75;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    max-width: 260px;
+  }
+
+  /* ── CONTROLS ── */
+  .controls {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+  }
+
+  .ctrl-btn {
+    background: transparent;
+    border: 1px solid var(--green-faint);
+    color: var(--green-dim);
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 2px;
+    padding: 5px 10px;
+    cursor: pointer;
+    transition: border-color 0.1s, color 0.1s, box-shadow 0.1s;
+    text-transform: uppercase;
+  }
+
+  .ctrl-btn:hover {
+    border-color: var(--green);
+    color: var(--green);
+    box-shadow: 0 0 8px rgba(0, 255, 65, 0.2);
+  }
+
+  /* ── BOC AUDIO PLAYER (hidden visually, kept in DOM so browser plays it) ── */
+  .boc-wrapper {
+    position: fixed;
+    bottom: -120px;
+    left: 0;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    opacity: 0.01;
+    pointer-events: none;
+  }
+
+  #boc-player {
+    width: 320px;
+    height: 80px;
+    border: none;
+  }
+
+  /* ── OVERLAY INTENSITY SLIDER ── */
+  .overlay-control {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 9px;
+    letter-spacing: 2px;
+    opacity: 0.4;
+    text-transform: uppercase;
+  }
+
+  input[type=range] {
+    -webkit-appearance: none;
+    width: 60px;
+    height: 1px;
+    background: var(--green-dim);
+    outline: none;
+    cursor: pointer;
+  }
+
+  input[type=range]::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    width: 8px;
+    height: 8px;
+    background: var(--green);
+    border-radius: 0;
+    cursor: pointer;
+  }
+
+  .footer-note {
+    font-size: 9px;
+    letter-spacing: 2px;
+    opacity: 0.2;
+    padding: 0 0 10px;
+    text-align: center;
+  }
+</style>
+</head>
+<body>
+
+<!-- Header -->
+<header>
+  <div class="site-title"><span class="status-dot"></span>green family guy</div>
+</header>
+
+<!-- Main video stage -->
+<div class="main-stage">
+
+  <!-- YouTube: Family Guy (muted) -->
+  <iframe
+    id="fg-player"
+    src=""
+    allow="autoplay; encrypted-media"
+    allowfullscreen
+    title="Family Guy"
+  ></iframe>
+
+  <!-- Green overlay -->
+  <div class="green-overlay" id="greenOverlay"></div>
+  <div class="video-vignette"></div>
+
+  <!-- Start screen (shown until user clicks play) -->
+  <div class="start-screen" id="startScreen" onclick="startAll()">
+    <div class="start-label">click to begin</div>
+    <button class="start-btn">▶ play</button>
+  </div>
+
+</div>
+
+<!-- Bottom bar -->
+<div class="bottom-bar">
+
+  <!-- Left: current FG clip -->
+  <div class="track-block">
+    <div class="track-label">clip</div>
+    <div class="track-name" id="fgLabel">—</div>
+  </div>
+
+  <!-- Center: controls -->
+  <div class="controls">
+    <button class="ctrl-btn" onclick="prevFG()">◂ clip</button>
+    <div class="overlay-control">
+      green <input type="range" min="0" max="100" value="72" oninput="setOverlay(this.value)">
+    </div>
+    <button class="ctrl-btn" onclick="nextBOC()">track ▸</button>
+  </div>
+
+  <!-- Right: current BoC track -->
+  <div class="track-block right">
+    <div class="track-label">boards of canada</div>
+    <div class="track-name" id="bocLabel">—</div>
+  </div>
+
+</div>
+
+<div class="footer-note">credit to: <a href="https://www.instagram.com/dktamt">(IG) @dktamt</a> for the idea.<br/>tested with firefox 150. may not work with other browsers.</div>
+
+<!-- BoC audio player (tiny, off-screen — browsers won't play fully hidden iframes) -->
+<div class="boc-wrapper">
+  <iframe id="boc-player" src="" allow="autoplay; encrypted-media" title="Boards of Canada"></iframe>
+</div>
+
+<script>
+  // ── Playlists ────────────────────────────────────────────────────────────
+  const FG_CLIPS = [
+    { id: 'JQDFgbWIEeA', title: 'funny moments vol. 1' },
+    { id: 'IohiBXQ_sGc', title: 'funny moments vol. 2' },
+    { id: 'kaRbE_PTDj8', title: 'funny moments vol. 3' },
+    { id: 'm_YPRD1oz0o', title: 'stewie funny moments' },
+    { id: 'YLlESzfEvmU', title: 'peter griffin funny moments' },
+  ];
+
+  const BOC_TRACKS = [
+    { id: 'SM4tQcUt_mQ', title: 'roygbiv' },
+    { id: 'MEFSU7WeZt0', title: 'happy cycling' },
+    { id: 'YSi78g2CXCM', title: 'music is math' },
+    { id: '4uPMG7S2f3g', title: 'aquarius' },
+    { id: 'u8tyqgRaY_g', title: 'telephasic workshop' },
+    { id: 'IXGTZ7r9C1M', title: 'sixtyten' },
+  ];
+
+  let fgIndex = 0;
+  let bocIndex = 0;
+
+  // No enablejsapi=1 → YouTube never attempts postMessage back to this page
+  function fgSrc(id) {
+    return `https://www.youtube.com/embed/${id}?autoplay=1&mute=1&controls=1&rel=0&modestbranding=1&iv_load_policy=3`;
+  }
+
+  function bocSrc(id) {
+    return `https://www.youtube.com/embed/${id}?autoplay=1&mute=0&controls=0&rel=0&modestbranding=1`;
+  }
+
+  // ── Start (user gesture satisfies autoplay policy for both iframes) ───────
+  function startAll() {
+    document.getElementById('startScreen').classList.add('hidden');
+    document.getElementById('fg-player').src  = fgSrc(FG_CLIPS[fgIndex].id);
+    document.getElementById('boc-player').src = bocSrc(BOC_TRACKS[bocIndex].id);
+    updateLabels();
+  }
+
+  // ── Navigation ────────────────────────────────────────────────────────────
+  function prevFG() {
+    fgIndex = (fgIndex - 1 + FG_CLIPS.length) % FG_CLIPS.length;
+    document.getElementById('fg-player').src = fgSrc(FG_CLIPS[fgIndex].id);
+    updateLabels();
+  }
+
+  function nextBOC() {
+    bocIndex = (bocIndex + 1) % BOC_TRACKS.length;
+    document.getElementById('boc-player').src = bocSrc(BOC_TRACKS[bocIndex].id);
+    updateLabels();
+  }
+
+  function updateLabels() {
+    document.getElementById('fgLabel').textContent  = FG_CLIPS[fgIndex].title;
+    document.getElementById('bocLabel').textContent = BOC_TRACKS[bocIndex].title;
+  }
+
+  // ── Overlay intensity control ─────────────────────────────────────────────
+  function setOverlay(val) {
+    document.getElementById('greenOverlay').style.background =
+      `rgba(0, 255, 40, ${val / 100})`;
+  }
+
+  updateLabels();
+</script>
+</body>
+</html>
