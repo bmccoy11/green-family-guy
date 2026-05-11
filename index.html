@@ -229,12 +229,11 @@
     opacity: 0.25;
     text-align: center;
     padding: 10px 16px;
-    /* Keeps footer above the home indicator on notched iPhones */
     padding-bottom: calc(10px + env(safe-area-inset-bottom));
     border-top: 1px solid var(--green-faint);
   }
 
-  /* ── BOC PLAYER (must be in DOM + have layout to play) ── */
+  /* ── BOC PLAYER ── */
   .boc-wrapper {
     position: fixed;
     bottom: -200px;
@@ -256,18 +255,12 @@
 <body>
 
 <div class="main-stage">
-  <iframe
-    id="fg-player"
-    src=""
-    allow="autoplay; encrypted-media"
-    allowfullscreen
-    title="Family Guy"
-  ></iframe>
+  <div id="fg-player"></div>
 
   <div class="green-overlay" id="greenOverlay"></div>
 
   <div class="start-screen" id="startScreen" onclick="startAll()">
-    <div class="start-label">tap to play</div>
+    <div class="start-label">tap to begin.</div>
     <button class="start-btn">▶ play</button>
   </div>
 </div>
@@ -299,19 +292,20 @@
 </footer>
 
 <div class="boc-wrapper">
-  <iframe id="boc-player" src="" allow="autoplay; encrypted-media" title="Boards of Canada"></iframe>
+  <div id="boc-player"></div>
 </div>
 
+<script src="https://www.youtube.com/iframe_api"></script>
 <script>
   const FG_CLIPS = [
     { id: 'JQDFgbWIEeA', title: 'funny moments vol. 1' },
     { id: 'IohiBXQ_sGc', title: 'funny moments vol. 2' },
     { id: 'kaRbE_PTDj8', title: 'funny moments vol. 3' },
     { id: 'm_YPRD1oz0o', title: 'stewie funny moments' },
-    { id: 'YLlESzfEvmU', title: 'peter griffin funny moments' },
+    { id: 'YLlESzfEvmU', title: 'peter griffin funny moments' }
   ];
 
-const BOC_TRACKS = [
+  const BOC_TRACKS = [
     { id: 'gCpWlusq3_c', title: 'ready lets go' },
     { id: 'oVLbPMFr1cE', title: 'prophecy at 1420 mhz' },
     { id: 'YSi78g2CXCM', title: 'music is math' },
@@ -389,33 +383,64 @@ const BOC_TRACKS = [
     { id: 'e2lyYEUPat8', title: "tomorrow's harvest transmission" }
   ];
 
+  let fgPlayer, bocPlayer;
   let fgIndex = 0;
   let bocIndex = 0;
 
-  function fgSrc(id) {
-    return `https://www.youtube.com/embed/${id}?autoplay=1&mute=1&controls=1&rel=0&modestbranding=1&iv_load_policy=3`;
-  }
-
-  function bocSrc(id) {
-    return `https://www.youtube.com/embed/${id}?autoplay=1&mute=0&controls=0&rel=0&modestbranding=1`;
-  }
-
+  // Initializes YouTube players and starts playback
   function startAll() {
     document.getElementById('startScreen').classList.add('hidden');
-    document.getElementById('fg-player').src  = fgSrc(FG_CLIPS[fgIndex].id);
-    document.getElementById('boc-player').src = bocSrc(BOC_TRACKS[bocIndex].id);
+
+    fgPlayer = new YT.Player('fg-player', {
+      videoId: FG_CLIPS[fgIndex].id,
+      playerVars: { 'autoplay': 1, 'mute': 1, 'controls': 1, 'rel': 0, 'modestbranding': 1, 'iv_load_policy': 3 },
+      events: {
+        'onStateChange': function(event) {
+          // YT.PlayerState.ENDED is 0
+          if (event.data === YT.PlayerState.ENDED) {
+            nextFG();
+          }
+        }
+      }
+    });
+
+    bocPlayer = new YT.Player('boc-player', {
+      videoId: BOC_TRACKS[bocIndex].id,
+      playerVars: { 'autoplay': 1, 'mute': 0, 'controls': 0, 'rel': 0, 'modestbranding': 1 },
+      events: {
+        'onStateChange': function(event) {
+          // YT.PlayerState.ENDED is 0
+          if (event.data === YT.PlayerState.ENDED) {
+            nextBOC();
+          }
+        }
+      }
+    });
+
     updateLabels();
   }
 
   function prevFG() {
     fgIndex = (fgIndex - 1 + FG_CLIPS.length) % FG_CLIPS.length;
-    document.getElementById('fg-player').src = fgSrc(FG_CLIPS[fgIndex].id);
+    if (fgPlayer && fgPlayer.loadVideoById) {
+      fgPlayer.loadVideoById(FG_CLIPS[fgIndex].id);
+    }
+    updateLabels();
+  }
+
+  function nextFG() {
+    fgIndex = (fgIndex + 1) % FG_CLIPS.length;
+    if (fgPlayer && fgPlayer.loadVideoById) {
+      fgPlayer.loadVideoById(FG_CLIPS[fgIndex].id);
+    }
     updateLabels();
   }
 
   function nextBOC() {
     bocIndex = (bocIndex + 1) % BOC_TRACKS.length;
-    document.getElementById('boc-player').src = bocSrc(BOC_TRACKS[bocIndex].id);
+    if (bocPlayer && bocPlayer.loadVideoById) {
+      bocPlayer.loadVideoById(BOC_TRACKS[bocIndex].id);
+    }
     updateLabels();
   }
 
@@ -429,6 +454,7 @@ const BOC_TRACKS = [
       `rgba(0, 255, 40, ${val / 100})`;
   }
 
+  // Set initial labels before API loads
   updateLabels();
 </script>
 </body>
