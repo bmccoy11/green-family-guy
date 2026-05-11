@@ -287,8 +287,8 @@
   <div class="btn-row">
     <button class="ctrl-btn" onclick="prevFG()">◂ clip</button>
     <div class="overlay-control">
-      green
-      <input type="range" min="0" max="100" value="72" oninput="setOverlay(this.value)">
+     intensity
+      <input type="range" min="0" max="100" value="100" oninput="setOverlay(this.value)">
     </div>
     <button class="ctrl-btn" onclick="nextBOC()">track ▸</button>
   </div>
@@ -311,13 +311,82 @@
     { id: 'YLlESzfEvmU', title: 'peter griffin funny moments' },
   ];
 
-  const BOC_TRACKS = [
+const BOC_TRACKS = [
+    { id: 'gCpWlusq3_c', title: 'ready lets go' },
+    { id: 'oVLbPMFr1cE', title: 'prophecy at 1420 mhz' },
+    { id: 'YSi78g2CXCM', title: 'music is math' },
     { id: 'SM4tQcUt_mQ', title: 'roygbiv' },
     { id: 'MEFSU7WeZt0', title: 'happy cycling' },
-    { id: 'YSi78g2CXCM', title: 'music is math' },
-    { id: '4uPMG7S2f3g', title: 'aquarius' },
-    { id: 'u8tyqgRaY_g', title: 'telephasic workshop' },
-    { id: 'IXGTZ7r9C1M', title: 'sixtyten' },
+    { id: 'PaIr8m6f-GE', title: 'amo bishop roden' },
+    { id: '6_lzNFjqGiw', title: 'olson' },
+    { id: 'OjvgGE_q-5I', title: "wildlife analysis" },
+    { id: 'vzBA3DcF8ag', title: "an eagle in your mind" },
+    { id: '2rU65M-eYSw', title: "the color of the fire" },
+    { id: 'u8tyqgRaY_g', title: "telephasic workshop" },
+    { id: 'cxbOeD0ez8Y', title: "triangles & rhombuses" },
+    { id: 'IXGTZ7r9C1M', title: "sixtyten" },
+    { id: '2SvTeJrAlV0', title: "turquoise hexagon sun" },
+    { id: 'lUrBDz8cDys', title: "kaini industries" },
+    { id: 'u13PruASvx8', title: "bocuma" },
+    { id: 'IrC9lwfTC0Y', title: "rue the whirl" },
+    { id: '4uPMG7S2f3g', title: "aquarius" },
+    { id: 'zdwkx-m8TGQ', title: "pete standing alone" },
+    { id: 'Smkz8TyAheo', title: "smokes quantity" },
+    { id: 'oJFk_Eydm6o', title: "open the light" },
+    { id: 'wnopyFg5msU', title: "one very important thought" },
+    { id: 'x0mhZHOfKj8', title: "beware the friendly stranger" },
+    { id: '5RU4cMtNLtQ', title: "gyroscope" },
+    { id: 'FkpSfC5VmRk', title: "dandelion" },
+    { id: 'GNb-ODwSA40', title: "sunshine recorder" },
+    { id: 'f3cFyQRn8Ac', title: "in the annexe" },
+    { id: 'hBydEaf6iv4', title: "julie and candy" },
+    { id: 'MIuUOqFXyik', title: "the smallest weird number" },
+    { id: 'lI_8BHbauuQ', title: "1969" },
+    { id: '2hZp41USTSE', title: "energy warning" },
+    { id: 'FMbyebuDKxQ', title: "the beach at redpoint" },
+    { id: 'BXDGUnw1pf8', title: "opening the mouth" },
+    { id: 'EIDrZXOMNjk', title: "alpha and omega" },
+    { id: 'A3ia6wu4OeA', title: "i saw drones" },
+    { id: 'OwrrjDYJr9I', title: "the devil is in the details" },
+    { id: 'XK_p6F5hFmU', title: "a is to b as b is to c" },
+    { id: '0qUbhTK74do', title: "over the horizon radar" },
+    { id: 'WmgtRK4_l5Q', title: "dawn chorus" },
+    { id: 'Tnj061MYXpo', title: "diving station" },
+    { id: '72kberrO2XU', title: "you could feel the sky" },
+    { id: 'ndbbonb_2P4', title: "corsair" },
+    { id: 'H1vcL4Gmdyo', title: "magic window" },
+    { id: 'HpUZ0qhqlYo', title: "into the rainbow vein" },
+    { id: 'bkdNogg3jw0', title: "chromakey dreamcoat" },
+    { id: 'muQp6XK_uZM', title: "satellite anthem icarus" },
+    { id: 'm4M5OV9N3kM', title: "peacock tail" },
+    { id: 'Ng2vTXxnD20', title: "boards of canada - dayvan cowboy" },
+    { id: 'd4UwSmPYzTA', title: "a moment of clarity" },
+    { id: '92gg3Q6ptos', title: "84 pontiac dream" },
+    { id: 'XpBOiVerVTk', title: "sherbet head" },
+    { id: 'UqZRMSjYFws', title: "oscar see through red eye" },
+    { id: 'ShzgHdzBXgM', title: "ataronchronon" },
+    { id: 'ArCrT2mOOuE', title: "hey saturday sun" },
+    { id: 'IyJ-adYyMZ8', title: "constants are changing" },
+    { id: '-CDXKaMjVMg', title: "slow this bird down" },
+    { id: 'nrSSa6kFus4', title: "tears from the compound eye" },
+    { id: 'OlSX-tlAmKI', title: "farewell fire" },
+    { id: 'p3rPoMlP7_E', title: "gemini" },
+    { id: '2jTg-q6Drt0', title: "reach for the dead (from tomorrow's harvest)" },
+    { id: 'W-Ejg5Lllr4', title: "white cyclosa" },
+    { id: 'JFAmO9fjGY0', title: "jacquard causeway" },
+    { id: 'RVthO5Zb2a0', title: "telepath" },
+    { id: 'VQAD1DkpGoc', title: "cold earth" },
+    { id: 'vC6yCROjpz8', title: "transmisiones ferox" },
+    { id: 'wLCT71D9PhY', title: "sick times" },
+    { id: '7qzf1rs79qU', title: "collapse" },
+    { id: 'BQ-zZdbqORk', title: "palace posy" },
+    { id: 'ebiePI_uth4', title: "split your infinities" },
+    { id: 'vmwjvx5tnu0', title: "uritual" },
+    { id: 'eLjjrBIbvFQ', title: "nothing is real" },
+    { id: '-2p4P5zbS7U', title: "sundown" },
+    { id: 'bx7LNxW_kSM', title: "new seeds" },
+    { id: 'buSPS3U07aM', title: "come to dust" },
+    { id: 'e2lyYEUPat8', title: "tomorrow's harvest transmission" }
   ];
 
   let fgIndex = 0;
